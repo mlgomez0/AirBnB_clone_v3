@@ -20,7 +20,6 @@ def get_states(state_id):
             state_list.append(v.to_dict())
         return jsonify(state_list)
     elif (ids not in dic.keys()):
-        print("No funciono")
         abort(404)
     else:
         return jsonify(dic[ids].to_dict())
