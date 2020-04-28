@@ -46,12 +46,12 @@ def post_states():
     try:
         json = request.get_json()
     except:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+        return make_response(jsonify({'error': 'Lol que es eso?'}), 400)
         """ return Response("Not a JSON\n",
                         status=400,
                         mimetype='application/json') """
     if ('name' not in json.keys()):
-        return make_response(jsonify({'error': 'Missing name'}), 400)
+        return make_response(jsonify({'error': 'WTF! y el nombre?'}), 400)
         """ return Response("Missing name\n",
                         status=400,
                         mimetype='application/json') """
@@ -66,7 +66,7 @@ def update_states(state_id):
     try:
         json = request.get_json()
     except:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+        return make_response(jsonify({'error': 'Lol que es eso?'}), 400)
         """ return Response("Not a JSON\n",
                         status=400,
                         mimetype='application/json') """
