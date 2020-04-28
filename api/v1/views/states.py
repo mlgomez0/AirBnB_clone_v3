@@ -46,15 +46,15 @@ def post_states():
     try:
         json = request.get_json()
     except:
-        return make_response(jsonify({'error': 'Lol que es eso?'}), 400)
-        """ return Response("Not a JSON\n",
+        """"return make_response(jsonify({'error': "Not a JSON\n"}), 400)"""
+        return Response("Not a JSON",
                         status=400,
-                        mimetype='application/json') """
+                        mimetype='application/json')
     if ('name' not in json.keys()):
-        return make_response(jsonify({'error': 'WTF! y el nombre?'}), 400)
-        """ return Response("Missing name\n",
+        """ return make_response(jsonify({'error': "Missing name\n"}), 400) """
+        return Response("Missing name",
                         status=400,
-                        mimetype='application/json') """
+                        mimetype='application/json')
     obj = State(**json)
     storage.new(obj)
     storage.save()
@@ -66,10 +66,10 @@ def update_states(state_id):
     try:
         json = request.get_json()
     except:
-        return make_response(jsonify({'error': 'Lol que es eso?'}), 400)
-        """ return Response("Not a JSON\n",
+        """return make_response(jsonify({'error': 'Lol que es eso?'}), 400)"""
+        return Response("Not a JSON",
                         status=400,
-                        mimetype='application/json') """
+                        mimetype='application/json')
     dic = storage.all(State)
     ids = "State." + str(state_id)
     if (ids not in dic.keys()):
