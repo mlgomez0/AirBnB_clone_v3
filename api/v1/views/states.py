@@ -35,8 +35,7 @@ def delete_states(state_id):
         abort(404)
     else:
         storage.delete(dic[ids])
-        storage.reload()
-        storage.close()
+        storage.save()
         return jsonify({})
 
 
@@ -45,15 +44,9 @@ def post_states():
     try:
         json = request.get_json()
     except:
-        """"return make_response(jsonify({'error': "Not a JSON\n"}), 400)"""
-        return Response("Not a JSON",
-                        status=400,
-                        mimetype='application/json')
+        return make_response(jsonify({'error': "Not a JSON"}), 400)
     if ('name' not in json.keys()):
-        """ return make_response(jsonify({'error': "Missing name\n"}), 400) """
-        return Response("Missing name",
-                        status=400,
-                        mimetype='application/json')
+        return make_response(jsonify({'error': "Missing name"}), 400)
     obj = State(**json)
     storage.new(obj)
     storage.save()
@@ -65,10 +58,7 @@ def update_states(state_id):
     try:
         json = request.get_json()
     except:
-        """return make_response(jsonify({'error': 'Lol que es eso?'}), 400)"""
-        return Response("Not a JSON",
-                        status=400,
-                        mimetype='application/json')
+        return make_response(jsonify({'error': "Not a JSON"}), 400)
     dic = storage.all(State)
     ids = "State." + str(state_id)
     if (ids not in dic.keys()):
