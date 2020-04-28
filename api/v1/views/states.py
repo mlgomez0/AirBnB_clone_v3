@@ -45,6 +45,8 @@ def post_states():
         json = request.get_json()
     except:
         return make_response(jsonify({'error': "Not a JSON"}), 400)
+    if json is None:
+        return make_response(jsonify({'error': "Not a JSON"}), 400)
     if ('name' not in json.keys()):
         return make_response(jsonify({'error': "Missing name"}), 400)
     obj = State(**json)
@@ -58,6 +60,8 @@ def update_states(state_id):
     try:
         json = request.get_json()
     except:
+        return make_response(jsonify({'error': "Not a JSON"}), 400)
+    if json is None:
         return make_response(jsonify({'error': "Not a JSON"}), 400)
     dic = storage.all(State)
     ids = "State." + str(state_id)
