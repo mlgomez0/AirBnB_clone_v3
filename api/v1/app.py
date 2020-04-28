@@ -22,6 +22,7 @@ def not_found(error):
     """customized response to 404 error"""
     return make_response(jsonify({"error": "Not found"}), 404)
 
+
 if __name__ == "__main__":
     if os.getenv('HBNB_API_HOST'):
         host_env = os.getenv('HBNB_API_HOST')
