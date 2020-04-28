@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ holds class City"""
 from models.state import City, State
-from flask import jsonify, abort, request, Response, make_response
+from flask import jsonify, abort, request, make_response
 from models import storage
 from api.v1.views import app_views
 
@@ -56,15 +56,12 @@ def post_city(state_id):
         try:
             json = request.get_json()
         except:
-            """return make_response(jsonify({'error': "Not a JSON\n"}), 400)"""
-            return Response("Not a JSON",
-                            status=400,
-                            mimetype='application/json')
+            return make_response(jsonify({'error': "Not a JSON"}), 400)
+        if json is None:
+            return make_response(jsonify({'error': "Not a JSON"}), 400)
         if ('name' not in json.keys()):
-            """return make_response(jsonify({'error':\n"}), 400)"""
-            return Response("Missing name",
-                            status=400,
-                            mimetype='application/json')
+            return make_response(jsonify({'error': "Missing name"}), 400)
+
         json['state_id'] = state_id
         obj = City(**json)
         storage.new(obj)
@@ -80,10 +77,9 @@ def update_cities(city_id):
         try:
             json = request.get_json()
         except:
-            """return make_response(jsonify({'error': eso?'}), 400)"""
-            return Response("Not a JSON",
-                            status=400,
-                            mimetype='application/json')
+            return make_response(jsonify({'error': "Not a JSON"}), 400)
+        if json is None:
+            return make_response(jsonify({'error': "Not a JSON"}), 400)
         dic = storage.all(City)
         ids = "City." + city_id
         for k, v in json.items():
