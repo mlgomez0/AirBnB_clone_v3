@@ -11,6 +11,7 @@ def status_rep():
     """return status in json format """
     return (jsonify({"status": "OK"}))
 
+
 @app_views.route('/stats', strict_slashes=False, endpoint='count')
 def print_count():
     classes_dic = {'City': 'cities',
@@ -18,8 +19,7 @@ def print_count():
                    'Place': 'places',
                    'Review': 'reviews',
                    'State': 'states',
-                   'User': 'users'
-    }
+                   'User': 'users'}
     dic = storage.all()
     class_list = []
     final_dic = {}

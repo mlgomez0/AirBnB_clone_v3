@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ return the status of your API """
 
-from flask import Flask
+from flask import Flask, make_response, jsonify
 from models import storage
 from api.v1.views import app_views
 import os
@@ -15,6 +15,12 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 def close_all(self):
     """call the close method from storage"""
     storage.close()
+
+
+@app.errorhandler(404)
+def not_found(error):
+    """customized response to 404 error"""
+    return make_response(jsonify({"error": "Not found"}), 404)
 
 if __name__ == "__main__":
     if os.getenv('HBNB_API_HOST'):
