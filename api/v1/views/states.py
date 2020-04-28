@@ -46,13 +46,15 @@ def post_states():
     try:
         json = request.get_json()
     except:
-        return Response("Not a JSON\n",
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+        """ return Response("Not a JSON\n",
                         status=400,
-                        mimetype='application/json')
+                        mimetype='application/json') """
     if ('name' not in json.keys()):
-        return Response("Missing name\n",
+        return make_response(jsonify({'error': 'Missing name'}), 400)
+        """ return Response("Missing name\n",
                         status=400,
-                        mimetype='application/json')
+                        mimetype='application/json') """
     obj = State(**json)
     storage.new(obj)
     storage.save()
@@ -64,9 +66,10 @@ def update_states(state_id):
     try:
         json = request.get_json()
     except:
-        return Response("Not a JSON\n",
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+        """ return Response("Not a JSON\n",
                         status=400,
-                        mimetype='application/json')
+                        mimetype='application/json') """
     dic = storage.all(State)
     ids = "State." + str(state_id)
     if (ids not in dic.keys()):
