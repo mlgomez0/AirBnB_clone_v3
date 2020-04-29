@@ -1,43 +1,38 @@
 #!/usr/bin/python3
 """ holds class User"""
-from models.state import City, State
+from models.user import User
 from flask import jsonify, abort, request, make_response
 from models import storage
 from api.v1.views import app_views
 
 
-@app_views.route('/states/<state_id>/cities',
+@app_views.route('/users',
                  methods=['GET'], strict_slashes=False)
-def get_cities(state_id):
-    ids = "State." + state_id
-    dic_obj = storage.all()
-    city_dics = []
-    if (ids in dic_obj.keys()):
-        list_cities = dic_obj[ids].cities
-        for city in list_cities:
-            city_dics.append(city.to_dict())
-        return jsonify(city_dics)
-    else:
-        abort(404)
+def get_users():
+    dic_obj = storage.all(User)
+    user_dics = []
+    for k, v in dic_obj.items():
+        user_dics.append(v.to_dict())
+    return jsonify(user_dics)
 
 
-@app_views.route('/cities/<city_id>',
+@app_views.route('/users/<user_id>',
                  methods=['GET'], strict_slashes=False)
-def get_city(city_id):
-    ids = "City." + city_id
-    dic_obj = storage.all(City)
+def get_user(user_id):
+    ids = "User." + user_id
+    dic_obj = storage.all(User)
     if (ids in dic_obj.keys()):
         return jsonify(dic_obj[ids].to_dict())
     else:
         abort(404)
 
 
-@app_views.route('/cities/<city_id>',
+@app_views.route('/users/<user_id>',
                  methods=['DELETE'],
                  strict_slashes=False)
-def delete_cities(city_id):
-    dic = storage.all(City)
-    ids = "City." + city_id
+def delete_user(user_id):
+    dic = storage.all(User)
+    ids = "User." + user_id
     if (ids not in dic.keys()):
         abort(404)
     else:
@@ -47,47 +42,42 @@ def delete_cities(city_id):
         return jsonify({})
 
 
-@app_views.route('/states/<state_id>/cities',
+@app_views.route('/users',
                  methods=['POST'], strict_slashes=False)
-def post_city(state_id):
-    if ("State." + state_id not in storage.all(State).keys()):
+def post_user():
+    try:
+        json = request.get_json()
+    except:
+        return make_response(jsonify({'error': "Not a JSON"}), 400)
+    if json is None:
+        return make_response(jsonify({'error': "Not a JSON"}), 400)
+    if ('email' not in json.keys()):
+        return make_response(jsonify({'error': "Missing email"}), 400)
+    if ('password' not in json.keys()):
+        return make_response(jsonify({'error': "Missing password"}), 400)
+
+    obj = User(**json)
+    storage.new(obj)
+    storage.save()
+    return make_response(jsonify(obj.to_dict()), 201)
+
+
+@app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
+def update_user(user_id):
+    if ("User." + user_id not in storage.all(User).keys()):
         abort(404)
     else:
         try:
             json = request.get_json()
         except:
-            """return make_response(jsonify({'error': "Not a JSON\n"}), 400)"""
-            return Response("Not a JSON",
-                            status=400,
-                            mimetype='application/json')
-        if ('name' not in json.keys()):
-            """return make_response(jsonify({'error':\n"}), 400)"""
-            return Response("Missing name",
-                            status=400,
-                            mimetype='application/json')
-        json['state_id'] = state_id
-        obj = City(**json)
-        storage.new(obj)
-        storage.save()
-        return make_response(jsonify(obj.to_dict()), 201)
-
-
-@app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
-def update_cities(city_id):
-    if ("City." + city_id not in storage.all(City).keys()):
-        abort(404)
-    else:
-        try:
-            json = request.get_json()
-        except:
-            """return make_response(jsonify({'error': eso?'}), 400)"""
-            return Response("Not a JSON",
-                            status=400,
-                            mimetype='application/json')
-        dic = storage.all(City)
-        ids = "City." + city_id
+            return make_response(jsonify({'error': "Not a JSON"}), 400)
+        if json is None:
+            return make_response(jsonify({'error': "Not a JSON"}), 400)
+        dic = storage.all(User)
+        ids = "User." + user_id
         for k, v in json.items():
-            if (k != 'id' and k != 'created_at' and k != "updated_at"):
+            if (k != 'id' and k != 'created_at' and k != "upd\
+                    ated_at" and k != "email"):
                 setattr(dic[ids], k, v)
         storage.save()
         return make_response(jsonify(dic[ids].to_dict()), 200)
