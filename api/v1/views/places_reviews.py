@@ -2,6 +2,7 @@
 """ holds class Review"""
 from models.review import Review
 from models.user import User
+from models.place import Place
 from flask import jsonify, abort, request, make_response
 from models import storage
 from api.v1.views import app_views
@@ -10,7 +11,7 @@ from api.v1.views import app_views
 @app_views.route('/places/<place_id>/reviews',
                  methods=['GET'], strict_slashes=False)
 def get_reviews(place_id):
-    ids = "Place." + state_id
+    ids = "Place." + place_id
     dic_obj = storage.all()
     review_dics = []
     if (ids in dic_obj.keys()):
@@ -25,7 +26,7 @@ def get_reviews(place_id):
 @app_views.route('/reviews/<review_id>',
                  methods=['GET'], strict_slashes=False)
 def get_review(review_id):
-    ids = "Review." + city_id
+    ids = "Review." + review_id
     dic_obj = storage.all(Review)
     if (ids in dic_obj.keys()):
         return jsonify(dic_obj[ids].to_dict())
