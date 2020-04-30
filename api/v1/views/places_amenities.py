@@ -2,14 +2,12 @@
 """ holds class Places-Amenity"""
 from models.review import Review
 from models.user import User
-from models.place import Place, place_amenity
+from models.place import Place
 from models.amenity import Amenity
 from flask import jsonify, abort, request, make_response
 from models import storage
 from api.v1.views import app_views
 import os
-import sqlalchemy
-
 
 @app_views.route('/places/<place_id>/amenities',
                  methods=['GET'], strict_slashes=False)
