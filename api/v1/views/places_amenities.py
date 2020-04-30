@@ -9,9 +9,11 @@ from models import storage
 from api.v1.views import app_views
 import os
 
+
 @app_views.route('/places/<place_id>/amenities',
                  methods=['GET'], strict_slashes=False)
 def get_ameni(place_id):
+    """get amenities list"""
     ids = "Place." + place_id
     dic_obj = storage.all()
     amenities_dics = []
@@ -28,6 +30,7 @@ def get_ameni(place_id):
                  methods=['DELETE'],
                  strict_slashes=False)
 def delete_ameny(place_id, amenity_id):
+    """delete amenity"""
     dic_amenity = storage.all(Amenity)
     dic_place = storage.all(Place)
     id_ame = "Amenity." + amenity_id
@@ -53,6 +56,7 @@ def delete_ameny(place_id, amenity_id):
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
                  methods=['POST'], strict_slashes=False)
 def post_revi(place_id, amenity_id):
+    """POST amenity list"""
     dic_amenity = storage.all(Amenity)
     dic_place = storage.all(Place)
     id_ame = "Amenity." + amenity_id
